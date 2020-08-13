@@ -1,10 +1,18 @@
-### Java中的内存泄漏总结
+## Java中的内存泄漏总结
+
+[TOC]
+
+
+
+### 可达性分析算法
 
 JVM使用**<u>可达性分析算法</u>**判断对象是否存活。
 
+#### GC Root
+
 通过一系列名为“GC Roots”的对象作为起点，从这些结点开始向下搜索，搜索所走过的路径称为“引用链（Reference Chain）”，当一个对象到GC Roots没有任何饮用链相连时，则证明此对象是不可用的。
 
-<img src="/Users/didi/Library/Application Support/typora-user-images/image-20200730193034379.png" alt="image-20200730193034379" style="zoom: 67%;" />
+<img src="/Users/didi/Library/Application Support/typora-user-images/image-20200805222028001.png" alt="image-20200805222028001" style="zoom:50%;" />
 
 object4、object5、object6虽然有互相判断，但是它们到GC Rootd是不可达的，所以它们将会判定为是可回收对象。
 
@@ -32,7 +40,7 @@ object4、object5、object6虽然有互相判断，但是它们到GC Rootd是不
 
 
 
-#### 可能导致内存泄漏的原因：
+### 可能导致内存泄漏的原因：
 
 #### 1. static字段引起的内存泄漏
 
@@ -163,24 +171,3 @@ public boolean equals(Object anObject) {
 一旦线程不再存在，该线程的threadLocal对象就应该被垃圾收集，而现在线程的创建都是使用线程池，线程池有线程重用的功能，因此线程就不会被垃圾回收器回收。所以使用到ThreadLocal来保留线程池中的线程的变量副本时，ThreadLocal没有显式地删除时，就会一直保留在内存中，不会被垃圾回收。
 
 解决办法：不再使用ThreadLocal时，调用remove()方法，该方法删除了此变量的当前线程值。不要使用ThreadLocal.set(null)，它只是查找与当前线程关联的Map并将键值中这个threadLocal对象所对应的值为null，并没有清除这个键值对。
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
