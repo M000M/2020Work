@@ -1,6 +1,0 @@
-在VM Options中添加
-
--javaagent:/Users/didi/.jetbrains/jetbrains-agent-v3.0.0.jar
-
-在Register中的server address中填写
-http://fls.jetbrains-agent.com
